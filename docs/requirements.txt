@@ -1,11 +1,11 @@
 adjustText
 auto_mix_prep
+numpy
 celloracle
 dgl
 gseapy
 matplotlib
 networkx
-numpy
 pandas
 scanpy
 scikit_learn
