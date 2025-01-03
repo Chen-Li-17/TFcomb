@@ -1,4 +1,4 @@
-Chapter 1: scATAC_process
+Section 1: Process scATAC data
 ========================
 
 .. toctree::

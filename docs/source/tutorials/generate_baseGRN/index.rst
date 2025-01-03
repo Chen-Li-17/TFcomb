@@ -1,4 +1,4 @@
-Chapter 2: generate_baseGRN
+Section 2: Generate base GRN
 ============================
 
 .. toctree::
@@ -6,3 +6,4 @@ Chapter 2: generate_baseGRN
 
    ../../tutorial_example/generate_baseGRN/1-CellOracle_Cicero
    ../../tutorial_example/generate_baseGRN/2-CellOracle_tss_annotate
+   ../../tutorial_example/generate_baseGRN/3-CellOracle_tf_scan

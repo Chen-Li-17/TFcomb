@@ -9,7 +9,7 @@
 project = 'TFcomb'
 copyright = '2025, Chen Li'
 author = 'Chen Li'
-release = '0.1'
+release = '1.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -56,6 +56,7 @@ html_static_path = ['_static']
 
 import sphinx_rtd_theme
 html_theme = "sphinx_rtd_theme"
+html_logo = 'TFcomb.png'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # html_theme_options = {

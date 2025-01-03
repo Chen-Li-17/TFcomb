@@ -6,8 +6,24 @@
 TFcomb documentation
 ====================
 
+TFcomb is a python library to identify reprogramming TFs and TF combinations using scRNA-seq and scATAC-seq data.
+
+Overview
+---------
+
+.. include:: overview.rst
+   :start-line: 2
+
+
+
+News
+-----
+
+- 01/03/2025: We released TFcomb version 1.0. We provided a detailed document describing each step.
+
+
 Content
-=======
+---------
 
 .. toctree::
    :maxdepth: 2
