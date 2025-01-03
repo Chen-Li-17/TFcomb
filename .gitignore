@@ -7,3 +7,5 @@ TFcomb.egg-info
 tutorial_example/TFcomb_main/TFcomb_main_test.ipynb
 tutorial_example/TFcomb_main/TFcomb_main.py
 tutorial_example/TFcomb_main/save
+docs/source/tutorial_example/TFcomb_main/TFcomb_main_test.ipynb
+docs/source/tutorial_example/TFcomb_main/TFcomb_main.py
