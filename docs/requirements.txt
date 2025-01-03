@@ -1,4 +1,5 @@
 adjustText
+velocyto==0.17.16
 auto_mix_prep
 numpy
 celloracle
