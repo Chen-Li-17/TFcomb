@@ -6,5 +6,6 @@ scikit-learn
 scanpy
 torch
 sphinx_autodoc_typehints
+sphinx-automodapi
 nbsphinx
 sphinx_rtd_theme
