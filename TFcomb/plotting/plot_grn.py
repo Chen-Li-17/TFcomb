@@ -19,22 +19,22 @@ def plot_GRN(
     iterations=5,
     k=0.1,
     gene_color_dict = None):
-    """_summary_ add6
+    """Plot the GRN with TFs and target genes.
 
     Args:
-        tf_GRN_dict (_type_, optional): _description_. Defaults to None.
-        plot_tf_list (_type_, optional): _description_. Defaults to None.
-        save_dir_GRN (_type_, optional): _description_. Defaults to None.
-        filter_link (bool, optional): _description_. Defaults to True.
-        figsize (tuple, optional): _description_. Defaults to (15,15).
-        anno_tfs (_type_, optional): _description_. Defaults to None.
-        anno_edges (_type_, optional): _description_. Defaults to None.
-        show_mode (bool, optional): _description_. Defaults to True.
-        seed (int, optional): _description_. Defaults to 2.
-        scale (float, optional): _description_. Defaults to 0.5.
-        iterations (int, optional): _description_. Defaults to 5.
-        k (float, optional): _description_. Defaults to 0.1.
-        gene_color_dict (_type_, optional): _description_. Defaults to None.
+        tf_GRN_dict (dict, optional): A dict where keys are TFs and values are target genes. Defaults to None.
+        plot_tf_list (list, optional): A list of TFs to be plotted. Defaults to None.
+        save_dir_GRN (str, optional): Path to save the figure. Defaults to None.
+        filter_link (bool, optional): Whether filter the links with small values. Defaults to True.
+        figsize (tuple, optional): Size of figure. Defaults to (15,15).
+        anno_tfs (list, optional): Nodes to be annotated. Defaults to None.
+        anno_edges (list, optional): Edges to be annotated. Defaults to None.
+        show_mode (bool, optional): Whether plot the figure. Defaults to True.
+        seed (int, optional): Random seed. Defaults to 2.
+        scale (float, optional): The scale to show the graph. Defaults to 0.5.
+        iterations (int, optional): The parameters of nx.spring_layout. Defaults to 5.
+        k (float, optional): The parameters of nx.spring_layout. Defaults to 0.1.
+        gene_color_dict (dict, optional): A dict where keys are genes and values are colors, which is used to give colors representing the differentially expressed degree. Defaults to None.
     """
 
     if isinstance(plot_tf_list, str):
@@ -153,6 +153,16 @@ def create_gradient_color_list(n, start_color, middle_color, end_color):
         
 def get_gene_color_dict(oracle_part,
                         source_state):
+    """Generate the gene_color_dict
+
+    Args:
+        oracle_part (celloracle object): CellOracle object.
+        source_state (str): Name of the source state.
+
+    Returns:
+        gene_color_dict (dict): A dict mapping genes to colors.
+        gene_color_dict_2 (dict): A dict mapping genes to colors 2.
+    """
     
     adata = oracle_part.adata.copy()
 

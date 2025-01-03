@@ -31,36 +31,45 @@ def TF_inference(adata,
                     xlabel='index of TFs',
                     ylabel='Expected alteration',
                     save=None):
-    '''
-    A function used to infer the TFs' variation from the initial state to the control state.
-    
-    Parameters
-    ----------
-    adata: anndata.
-    cluster_name_for_GRN_unit: str. the column of init_cluster and control_cluster.
-    tf_list: list of TFs. Used to filter the rows of GRN matrix.
-    gene_GRN_mtx: df. Rows and columns are both the total genes.
-    tf_GRN_mtx: df. Rows are TFs and columns are genes.
-    prop_mode: str
-        1. 'fix': the recovered link without links with more than 1 propagations;
-        2. 'soft': the recovered links can work as the normal links.
-    init_cluster,control_cluster: str. 
-    layer_use: str. the layer of adata for infering.
-    model: str. regression model.
-    alpha: the penalty of ridge/lasso
-    plot: Bool. whether plot.
-    a1,a1,a3: the coefficients for the GRN of 1st/2nd/3rd propagation.
-    regression_percentile: int. the percentile to show the TFs.
-    annot_shifts: (int,int). 
-    xlabel,ylabel,save: strs. for plot and save figure.
-    
-    Return
-    ----------
-    rr: the trained regression model
-    X: np.array. The X for training the model.
-    init_ave: np.array. the average exp of init_cluster.
-    control_ave: np.array. the average exp of control_cluster.
-    '''
+    """
+    Infers transcription factor (TF) variation between an initial and control state.
+
+    This function performs regression analysis using GRN matrices and imputed gene 
+    expression data to infer the expected TF activity alterations between two cell states.
+
+    Args:
+        adata (anndata.AnnData): Input AnnData object containing single-cell data.
+        cluster_name_for_GRN_unit (str): Column in `adata.obs` specifying cluster labels.
+        tf_list (list): List of transcription factors to filter rows of the GRN matrix.
+        tf_GRN_mtx (pd.DataFrame): GRN matrix with TFs as rows and genes as columns.
+        gene_GRN_mtx (pd.DataFrame): GRN matrix with all genes as rows and columns.
+        tf_GRN_mtx_ori (pd.DataFrame): Original GRN matrix with TFs as rows and genes as columns.
+        gene_GRN_mtx_ori (pd.DataFrame): Original GRN matrix with all genes as rows and columns.
+        init_cluster (str): Name of the initial cluster/state.
+        control_cluster (str): Name of the control cluster/state.
+        prop_mode (str, optional): Mode of propagation:
+            - `'fix'`: Considers only direct links.
+            - `'soft'`: Includes propagated links. Defaults to `'soft'`.
+        layer_use (str, optional): Layer in `adata` to use for gene expression. Defaults to `'normalized_count'`.
+        model (str, optional): Regression model to use (`'ridge'`, `'linear'`, `'lasso'`). Defaults to `'ridge'`.
+        alpha (float, optional): Regularization strength for Ridge/Lasso regression. Defaults to 1.
+        plot (bool, optional): Whether to generate a plot of the results. Defaults to True.
+        a1 (float, optional): Weight for the first propagation level. Defaults to 0.8.
+        a2 (float, optional): Weight for the second propagation level. Defaults to 0.15.
+        a3 (float, optional): Weight for the third propagation level. Defaults to 0.05.
+        regression_percentile (int, optional): Percentile of regression coefficients to highlight in the plot. Defaults to 90.
+        annot_shifts (tuple, optional): Annotation shifts for the plot (x, y). Defaults to (2, 0.01).
+        xlabel (str, optional): Label for the x-axis of the plot. Defaults to `'index of TFs'`.
+        ylabel (str, optional): Label for the y-axis of the plot. Defaults to `'Expected alteration'`.
+        save (str, optional): Path to save the plot. If None, the plot is not saved. Defaults to None.
+
+    Returns:
+        tuple:
+            - rr (sklearn.base.RegressorMixin): Trained regression model.
+            - X (numpy.ndarray): Design matrix used for regression.
+            - init_ave (numpy.ndarray): Average gene expression in the initial cluster.
+            - control_ave (numpy.ndarray): Average gene expression in the control cluster.
+    """
     # get the average of init_cluster and control_cluster
     # get the whole imputed count
     gem = _adata_to_df(adata, layer_use)
@@ -205,24 +214,31 @@ def get_directing_score(
                     mode = 'single',
                     if_print = False,
                     X = None):
-    '''
-    given the list of TFs we want to change, and calculate the pcc of predicted change values and real change values.
-    
-    Parameter
-    ----------
-    change_tf: the list of the TFs we want to change.
-    rr: the trained regression model
-    tf_GRN_mtx: pandas dataframe. Rows are the total genes, columns are the regulatory TFs.
-    diff_ave: the true difference between the control state and the initial state.
-    mode: 
-        1.'single': get the pcc of each single TF
-        2.'multi': get the pcc by change all the input TFs
-        
-    Return
-    ----------
-    1.'single': return a dict of the pcc for each TF
-    2.'multi': return a pcc value
-    '''
+    """
+    Computes the predictive correlation (PCC) and accuracy of transcription factor (TF) changes.
+
+    This function evaluates the correlation and/or accuracy of predicted changes in target gene expression 
+    based on TF alterations, using a trained regression model and the GRN matrix.
+
+    Args:
+        change_tf (list): List of TFs to modify.
+        rr (sklearn.base.RegressorMixin): Trained regression model.
+        tf_GRN_mtx (pd.DataFrame): GRN matrix where rows are genes and columns are TFs.
+        tf_GRN_dict (dict): Dictionary mapping each TF to its regulated genes and their scores.
+        diff_ave (numpy.ndarray, optional): Observed differences between control and initial states. Defaults to None.
+        mode (str, optional): Evaluation mode:
+            - `'single'`: Compute PCC and accuracy for each TF individually.
+            - `'multi'`: Compute PCC for all input TFs together. Defaults to `'single'`.
+        if_print (bool, optional): Whether to print the results. Defaults to False.
+        X (numpy.ndarray, optional): Optional design matrix for regression. If None, it is calculated from `tf_GRN_mtx`. Defaults to None.
+
+    Returns:
+        Union[dict, float]: 
+            - If `mode='single'`: A tuple containing:
+                - `TF_pcc_dict` (dict): Dictionary mapping each TF to its PCC.
+                - `TF_acc_dict` (dict): Dictionary mapping each TF to its accuracy score.
+            - If `mode='multi'`: A single PCC value.
+    """
     
     # change_tf = cluster_tf_score_df[cluster_tf_score_df.coef_pvalue<5e-2]
     shift_coef = []

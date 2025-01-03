@@ -1,5 +1,9 @@
 *.DS_Store
 data/*
-!data
+!data/readme.txt
 tmp
 docs/build
+TFcomb.egg-info
+tutorial_example/TFcomb_main/TFcomb_main_test.ipynb
+tutorial_example/TFcomb_main/TFcomb_main.py
+tutorial_example/TFcomb_main/save

@@ -24,6 +24,34 @@ def get_edges_data(tf_GRN_mtx):
     return df
 
 class GRN_Dataset(DGLDataset):
+    """
+    A custom dataset class for representing Gene Regulatory Networks (GRN) as DGL graphs.
+
+    This class constructs a DGL graph dataset using gene expression data, transcription factors (TFs), 
+    and regulatory relationships encoded in a GRN matrix.
+
+    Args:
+        adata_part (anndata.AnnData): A subset of AnnData containing gene expression data.
+        tf_GRN_mtx (pd.DataFrame): A GRN matrix with TFs as rows and target genes as columns. 
+            The values represent regulatory weights.
+        tf_list (list): A list of transcription factors to label nodes.
+
+    Attributes:
+        adata_part (anndata.AnnData): Input AnnData object.
+        tf_GRN_mtx (pd.DataFrame): Input GRN matrix.
+        tf_list (list): List of transcription factors.
+        graph (dgl.DGLGraph): Constructed DGL graph with node and edge features.
+
+    Methods:
+        process():
+            Constructs the DGL graph from the GRN matrix and gene expression data.
+
+        __getitem__(i):
+            Returns the constructed graph. Since this dataset only contains one graph, `i` is ignored.
+
+        __len__():
+            Returns the number of graphs in the dataset. Always 1 for this class.
+    """
     def __init__(self,adata_part,tf_GRN_mtx,tf_list):
         self.adata_part = adata_part
         self.tf_GRN_mtx = tf_GRN_mtx

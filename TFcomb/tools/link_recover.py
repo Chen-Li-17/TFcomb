@@ -34,6 +34,48 @@ def GAT_recover_links(
                     count_fold = 9,
                     link_score_quantile = 0.1
                     ):
+    """
+
+    Performs link recovery using a GAT-based graph neural network model.
+
+    This function trains a GAT model to recover gene regulatory network (GRN) links, filters 
+    low-confidence links, and updates the GRN and links for further analysis.
+
+    Args:
+        g (dgl.DGLGraph, optional): Input graph representing the GRN. Defaults to None.
+        save_dir_GNN (str, optional): Directory to save GNN models and predictions. Defaults to None.
+        tf_list (list, optional): List of transcription factors. Defaults to None.
+        gene_list (list, optional): List of all genes in the GRN. Defaults to None.
+        tf_GRN_dict (dict, optional): Dictionary of TF-to-target regulatory relationships. Defaults to None.
+        oracle_part (co.Oracle, optional): Oracle object for GRN inference and simulation. Defaults to None.
+        links_part (Links, optional): Links object containing GRN links. Defaults to None.
+        combine (str, optional): Cluster or condition to analyze. Defaults to None.
+        threshold_number (int, optional): Number of links to consider during filtering. Defaults to 10000.
+        alpha_fit_GRN (float, optional): Parameter for refitting the GRN. Defaults to 10.
+        n_splits (int, optional): Number of cross-validation splits for training. Defaults to 10.
+        seed (int, optional): Random seed for reproducibility. Defaults to 42.
+        neg_link_split (str, optional): Strategy for negative link sampling ('all' or other). Defaults to 'all'.
+        model_name (str, optional): Name of the GNN model. Defaults to 'GAT'.
+        pred_name (str, optional): Name of the prediction module. Defaults to 'mlp'.
+        hidden_dim (int, optional): Dimension of hidden layers in the GNN. Defaults to 16.
+        out_dim (int, optional): Output dimension of the GNN. Defaults to 7.
+        num_heads (list, optional): List of attention heads for each GNN layer. Defaults to [4, 4, 6].
+        epochs (int, optional): Number of training epochs. Defaults to 1500.
+        lr (float, optional): Learning rate for the optimizer. Defaults to 0.01.
+        patience (int, optional): Early stopping patience. Defaults to 300.
+        device (str, optional): Device to run the model ('cuda' or 'cpu'). Defaults to 'cuda'.
+        verbose (bool, optional): Whether to print training progress. Defaults to True.
+        count_fold (int, optional): Minimum number of folds where a link must appear to be considered. Defaults to 9.
+        link_score_quantile (float, optional): Quantile threshold for filtering link scores. Defaults to 0.1.
+
+    Returns:
+        tuple: A tuple containing:
+            - gene_GRN_mtx (pd.DataFrame): Updated gene GRN matrix.
+            - tf_GRN_mtx (pd.DataFrame): Updated TF GRN matrix.
+            - tf_GRN_dict (dict): Updated TF-to-target regulatory dictionary.
+            - links_recover (Links): Updated links object with recovered links.
+
+    """
     
     
     model_dir = f'{save_dir_GNN}/model_checkpoint'+'/model.pt'

@@ -39,6 +39,9 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('../../code_test'))
 
+sys.path.insert(0, os.path.abspath(__file__+'../../../..'))
+import TFcomb
+
 templates_path = ['_templates']
 exclude_patterns = []
 

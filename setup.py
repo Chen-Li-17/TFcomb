@@ -13,7 +13,7 @@ setup(
     url = "https://github.com/Chen-Li-17/TFcomb",
     author = "Chen Li",
     author_email = "chen-li21@qq.com",
-    packages = find_packages(),
+    packages = ['TFcomb'],
     python_requires = ">3.8.0",
     classifiers = [
         'Intended Audience :: Science/Research',

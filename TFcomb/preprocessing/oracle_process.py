@@ -5,14 +5,18 @@ import numpy as np
 def oracle_preprocess(oracle,
                       k=10):
     """
-    Just a test - add3
+    Preprocesses the Oracle object by performing PCA and KNN imputation.
+
+    This function computes the optimal number of principal components based on 
+    the explained variance ratio, adjusts the number of neighbors (k) for KNN 
+    imputation, and applies the preprocessing steps to the Oracle object.
 
     Args:
-        oracle (_type_): _description_
-        k (int, optional): _description_. Defaults to 10.
+        oracle (co.Oracle): The Oracle object containing the data to preprocess.
+        k (int, optional): The number of neighbors for KNN imputation. Defaults to 10.
 
     Returns:
-        _type_: _description_
+        co.Oracle: The Oracle object after PCA and KNN imputation.
     """
     oracle.perform_PCA()
     plt.plot(np.cumsum(oracle.pca.explained_variance_ratio_)[:100])

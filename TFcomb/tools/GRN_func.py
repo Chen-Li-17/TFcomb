@@ -78,25 +78,23 @@ import numpy as np
 def get_GRN_parameters(oracle,
                        combine,
                        ):
-    '''
-    this function is used to get the dicts calculated from the GRN, which is required in the downstream analysis
-    
-    Parameters:
-    ----------
-    oracle: oracle object.
-    links: celloracle links object.
-    
-    Return:
-    ----------
-    total_gene_GRN_mtx: dict. each value is a df, rows and columns are both total genes.
-    total_tf_GRN_mtx: dict. each value is a df, rows are TFs, columns are total genes.
-    total_tf_GRN_filter_mtx: dict. each value is a df, rows are TFs, columns are regulated genes.
-    total_tf_GRN_dict: dict. each value is a dict, keys are TFs, values are dicts, keys are regulated genes, values are the regulated values.
-    total_tf_info_df: dict. each value is a df, the network scores of TFs, including the total rs and mean rs.
-    total_total_rs_dict: dict. each value is a dict, keys are TFs, values are total regulatory scores.
-    total_mean_rs_dict: dict. each value is a dict, keys are TFs, values are mean regulatory scores.
-    
-    '''
+    """
+    Extracts GRN (Gene Regulatory Network) parameters for downstream analysis.
+
+    This function processes the Oracle object's GRN data and calculates key GRN-related 
+    matrices and dictionaries required for further analysis.
+
+    Args:
+        oracle (co.Oracle): The Oracle object containing the GRN data.
+        combine (str): The specific cluster or condition to extract GRN information from.
+
+    Returns:
+        tuple: A tuple containing the following:
+            - gene_GRN_mtx_ori (pd.DataFrame): Original GRN matrix with all genes as rows and columns.
+            - tf_GRN_mtx_ori (pd.DataFrame): Filtered GRN matrix with TFs (transcription factors) as rows and all genes as columns.
+            - tf_GRN_dict (dict): Dictionary where keys are TFs and values are dictionaries. 
+              The nested dictionary maps target genes to their regulatory scores.
+    """
     gene_GRN_mtx_ori = oracle.coef_matrix_per_cluster[combine].copy()
     tf_GRN_mtx_ori = gene_GRN_mtx_ori[~(gene_GRN_mtx_ori == 0).all(axis=1)]
 
